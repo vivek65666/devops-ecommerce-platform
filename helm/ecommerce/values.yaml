@@ -1,0 +1,12 @@
+namespace: ecommerce
+imageRegistry: YOUR_ECR_REGISTRY
+imagePullPolicy: IfNotPresent
+replicas: 2
+ingress: {enabled: true, className: nginx, host: ecommerce.local}
+services:
+  - {name: user-service, image: ecommerce-user-service, port: 8001}
+  - {name: product-service, image: ecommerce-product-service, port: 8002}
+  - {name: cart-service, image: ecommerce-cart-service, port: 8003}
+  - {name: order-service, image: ecommerce-order-service, port: 8004}
+  - {name: payment-service, image: ecommerce-payment-service, port: 8005}
+  - {name: notification-service, image: ecommerce-notification-service, port: 8006}

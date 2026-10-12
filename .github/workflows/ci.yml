@@ -1,0 +1,39 @@
+name: CI - Test Scan Build
+on: {pull_request: {}, push: {branches: [main]}}
+permissions: {contents: read, id-token: write, security-events: write}
+jobs:
+  services:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: {service: [api-gateway,user-service,product-service,cart-service,order-service,payment-service,notification-service]}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Install dependencies
+        working-directory: services/${{ matrix.service }}
+        run: pip install -r requirements.txt
+      - name: Compile Python
+        working-directory: services/${{ matrix.service }}
+        run: python -m compileall app
+      - name: Docker build
+        run: docker build -t local/${{ matrix.service }}:${{ github.sha }} services/${{ matrix.service }}
+      - name: Trivy image scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with: {image-ref: local/${{ matrix.service }}:${{ github.sha }}, severity: HIGH,CRITICAL, ignore-unfixed: true, exit-code: "1"}
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: "20"}
+      - working-directory: frontend
+        run: npm install
+      - working-directory: frontend
+        run: npm run build
+  filesystem:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aquasecurity/trivy-action@0.28.0
+        with: {scan-type: fs, scan-ref: ., severity: HIGH,CRITICAL, ignore-unfixed: true, exit-code: "1"}

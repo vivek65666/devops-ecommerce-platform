@@ -1,0 +1,168 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: api-gateway, namespace: ecommerce}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: api-gateway}}
+  template:
+    metadata: {labels: {app: api-gateway}}
+    spec:
+      containers:
+      - name: api-gateway
+        image: YOUR_ECR_REGISTRY/ecommerce-api-gateway:latest
+        ports: [{containerPort: 8000}]
+        env:
+        - name: SERVICE_NAME
+          value: api-gateway
+        - name: PORT
+          value: "8000"
+        readinessProbe: {httpGet: {path: /ready, port: 8000}, initialDelaySeconds: 5, periodSeconds: 10}
+        livenessProbe: {httpGet: {path: /health, port: 8000}, initialDelaySeconds: 15, periodSeconds: 20}
+        resources:
+          requests: {cpu: 50m, memory: 64Mi}
+          limits: {cpu: 500m, memory: 256Mi}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: user-service, namespace: ecommerce}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: user-service}}
+  template:
+    metadata: {labels: {app: user-service}}
+    spec:
+      containers:
+      - name: user-service
+        image: YOUR_ECR_REGISTRY/ecommerce-user-service:latest
+        ports: [{containerPort: 8001}]
+        env:
+        - name: SERVICE_NAME
+          value: user-service
+        - name: PORT
+          value: "8001"
+        readinessProbe: {httpGet: {path: /ready, port: 8001}, initialDelaySeconds: 5, periodSeconds: 10}
+        livenessProbe: {httpGet: {path: /health, port: 8001}, initialDelaySeconds: 15, periodSeconds: 20}
+        resources:
+          requests: {cpu: 50m, memory: 64Mi}
+          limits: {cpu: 500m, memory: 256Mi}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: product-service, namespace: ecommerce}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: product-service}}
+  template:
+    metadata: {labels: {app: product-service}}
+    spec:
+      containers:
+      - name: product-service
+        image: YOUR_ECR_REGISTRY/ecommerce-product-service:latest
+        ports: [{containerPort: 8002}]
+        env:
+        - name: SERVICE_NAME
+          value: product-service
+        - name: PORT
+          value: "8002"
+        readinessProbe: {httpGet: {path: /ready, port: 8002}, initialDelaySeconds: 5, periodSeconds: 10}
+        livenessProbe: {httpGet: {path: /health, port: 8002}, initialDelaySeconds: 15, periodSeconds: 20}
+        resources:
+          requests: {cpu: 50m, memory: 64Mi}
+          limits: {cpu: 500m, memory: 256Mi}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: cart-service, namespace: ecommerce}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: cart-service}}
+  template:
+    metadata: {labels: {app: cart-service}}
+    spec:
+      containers:
+      - name: cart-service
+        image: YOUR_ECR_REGISTRY/ecommerce-cart-service:latest
+        ports: [{containerPort: 8003}]
+        env:
+        - name: SERVICE_NAME
+          value: cart-service
+        - name: PORT
+          value: "8003"
+        readinessProbe: {httpGet: {path: /ready, port: 8003}, initialDelaySeconds: 5, periodSeconds: 10}
+        livenessProbe: {httpGet: {path: /health, port: 8003}, initialDelaySeconds: 15, periodSeconds: 20}
+        resources:
+          requests: {cpu: 50m, memory: 64Mi}
+          limits: {cpu: 500m, memory: 256Mi}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: order-service, namespace: ecommerce}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: order-service}}
+  template:
+    metadata: {labels: {app: order-service}}
+    spec:
+      containers:
+      - name: order-service
+        image: YOUR_ECR_REGISTRY/ecommerce-order-service:latest
+        ports: [{containerPort: 8004}]
+        env:
+        - name: SERVICE_NAME
+          value: order-service
+        - name: PORT
+          value: "8004"
+        readinessProbe: {httpGet: {path: /ready, port: 8004}, initialDelaySeconds: 5, periodSeconds: 10}
+        livenessProbe: {httpGet: {path: /health, port: 8004}, initialDelaySeconds: 15, periodSeconds: 20}
+        resources:
+          requests: {cpu: 50m, memory: 64Mi}
+          limits: {cpu: 500m, memory: 256Mi}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: payment-service, namespace: ecommerce}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: payment-service}}
+  template:
+    metadata: {labels: {app: payment-service}}
+    spec:
+      containers:
+      - name: payment-service
+        image: YOUR_ECR_REGISTRY/ecommerce-payment-service:latest
+        ports: [{containerPort: 8005}]
+        env:
+        - name: SERVICE_NAME
+          value: payment-service
+        - name: PORT
+          value: "8005"
+        readinessProbe: {httpGet: {path: /ready, port: 8005}, initialDelaySeconds: 5, periodSeconds: 10}
+        livenessProbe: {httpGet: {path: /health, port: 8005}, initialDelaySeconds: 15, periodSeconds: 20}
+        resources:
+          requests: {cpu: 50m, memory: 64Mi}
+          limits: {cpu: 500m, memory: 256Mi}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: notification-service, namespace: ecommerce}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: notification-service}}
+  template:
+    metadata: {labels: {app: notification-service}}
+    spec:
+      containers:
+      - name: notification-service
+        image: YOUR_ECR_REGISTRY/ecommerce-notification-service:latest
+        ports: [{containerPort: 8006}]
+        env:
+        - name: SERVICE_NAME
+          value: notification-service
+        - name: PORT
+          value: "8006"
+        readinessProbe: {httpGet: {path: /ready, port: 8006}, initialDelaySeconds: 5, periodSeconds: 10}
+        livenessProbe: {httpGet: {path: /health, port: 8006}, initialDelaySeconds: 15, periodSeconds: 20}
+        resources:
+          requests: {cpu: 50m, memory: 64Mi}
+          limits: {cpu: 500m, memory: 256Mi}
+---

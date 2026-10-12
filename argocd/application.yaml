@@ -1,0 +1,12 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: {name: ecommerce, namespace: argocd}
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/YOUR_ORG/devops-ecommerce-platform.git
+    targetRevision: main
+    path: helm/ecommerce
+    helm: {values: "imageRegistry: YOUR_ECR_REGISTRY"}
+  destination: {server: https://kubernetes.default.svc, namespace: ecommerce}
+  syncPolicy: {automated: {prune: true, selfHeal: true}, syncOptions: [CreateNamespace=true]}
