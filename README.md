@@ -33,6 +33,8 @@ React → API Gateway → Microservices → PostgreSQL / Redis → AWS EKS
                                           Prometheus / Grafana / Loki
 ```
 
+![DevOps E-Commerce Platform Architecture](docs/architecture.png)
+
 ## 📁 Repository Structure
 
 ```text
