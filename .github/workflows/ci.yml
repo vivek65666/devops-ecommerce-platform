@@ -29,8 +29,8 @@ jobs:
         run: python -m compileall app
       - name: Docker build
         run: docker build -t local/${{ matrix.service }}:${{ github.sha }} services/${{ matrix.service }}
-     - name: Trivy image scan
-        uses: aquasecurity/trivy-action@v0.36.0
+      - name: Trivy image scan
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: local/${{ matrix.service }}:${{ github.sha }}
           severity: "HIGH,CRITICAL"
