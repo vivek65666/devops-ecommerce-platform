@@ -265,5 +265,3 @@ See `docs/interview-questions.md`.
 ## Project Goal
 
 > **Code → Build → Test → Scan → Package → Deploy → Observe → Troubleshoot**
-
-Built for practical DevOps learning — **@the.devops111**
